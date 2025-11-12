@@ -66,12 +66,21 @@ Heartbeat.chat **meets or exceeds requirements** for 4 out of 5 critical capabil
 - ✅ **Directory filtering** by groups, access levels
 - ✅ **Profile enrichment** (information collected during onboarding populates profiles)
 
+**BLKOUT's Current Implementation** (Confirmed Working):
+- **Onboarding Fields**: Image, name, age, location, motivation + fun questions
+- **Introductions Thread**: New registrants introduced to whole group
+- **Verification Process**: After verification → "full app member status"
+- **Tiered Directory Access**: Unverified members cannot see directory
+- **Tiered Posting Access**: Only verified members can post in member threads
+- **Member Directory**: Searchable directory of verified members
+
 **Example Custom Fields** (via onboarding):
 - Skills/expertise
 - Location (borough/city)
 - Interests/topics
 - Pronouns
 - Availability for mutual aid
+- Motivation for joining
 - Any custom question you design
 
 **Comparison**:
@@ -102,17 +111,32 @@ Heartbeat.chat **meets or exceeds requirements** for 4 out of 5 critical capabil
 - ✅ **Automated Access Groups** (auto-assign based on triggers)
 - ✅ **Paid Groups** (can require payment to join specific tier)
 
-**Perfect Fit for Our Tiered System**:
+**BLKOUT's Current Implementation** (Confirmed Working):
 ```
-BLKOUTHUB Member (Free Tier) = Access Group "Members"
-    → See basic channels, limited directory
+Unverified (New Signups) = Limited Access Group
+    → Cannot see member directory
+    → Cannot post in member threads
+    → Introduced in "introductions" thread
 
-BLKOUTHUB Active Member (Earned) = Access Group "Active Members"
-    → Unlocks DMs, event creation, full directory, private channels
-
-BLKOUTHUB Steward (Invited) = Role "Steward" + Access Group "Stewards"
-    → Moderation tools, analytics, governance channels
+Verified Members (After Manual Verification) = "Full App Member Status"
+    → Can access member directory
+    → Can post in member threads
+    → Full profile visible to other members
 ```
+
+**Easy Extension to Our Planned Tiered System**:
+```
+BLKOUTHUB Member (Current "Verified") = Access Group "Members"
+    → See basic channels, member directory, can post
+
+BLKOUTHUB Active Member (Earned via engagement) = Access Group "Active Members"
+    → Unlocks DMs, event creation, private channels, priority support
+
+BLKOUTHUB Steward (Invited volunteers) = Role "Steward" + Access Group "Stewards"
+    → Moderation tools, analytics, governance channels, volunteer benefits
+```
+
+**Key Insight**: You're already successfully using tiered access (unverified → verified). Extending to Active Member and Steward tiers is straightforward.
 
 **Comparison**:
 | Feature | WhatsApp | Telegram | Discord | Heartbeat | Verdict |
