@@ -109,24 +109,36 @@
 ### 5. Olamide Adesanya - August 1990
 
 **Companies House Search**: ✅ Complete
-**Result**: **3 appointments found** ✅
+**Result**: **3 appointments found** ✅ (2 companies identified, 1 pending member confirmation)
 
 **Details from search**:
 - Full name as appears: Olamide ADESANYA
 - Date of birth: August 1990 ✅ MATCHES EXACTLY
 - Registered address: Flat 3 Whitmore House, East Crescent, London, England, N11 3AU
 - Number of appointments: **3**
-- **Company details**: NEED TO RETRIEVE (see Next Steps below)
 
-**Variant name also found**:
-- Olamide Abdul-Afeez ADESANYA (August 1990, 1 appointment, same address)
-- May be same person with full middle name
+**Companies Identified**:
 
-**Next steps**:
-- [ ] Identify all 3 company names and registration numbers
-- [ ] Determine roles for each (Director/Secretary)
-- [ ] Check appointment dates and status (active/resigned)
-- [ ] Verify company statuses (active/dissolved)
+1. **THE REEL HAPPY HOUR PODCAST SHOW LTD**
+   - Registration Number: 14499903
+   - Role: Director
+   - Appointment Date: 22 November 2022
+   - Status: **Active**
+   - Shareholding: 75-100% (significant control)
+
+2. **VARSITY REIGN CLOTHING LTD**
+   - Registration Number: 13081070
+   - Role: Director
+   - Appointment Date: 14 December 2020
+   - Status: **Dissolved** (no longer trading)
+
+3. **[Third appointment - details needed from member]**
+   - Possibly under variant name "Olamide Abdul-Afeez ADESANYA"
+   - Same address (N11 3AU)
+
+**Action required**:
+- [ ] Contact Olamide to confirm 2 companies found are correct
+- [ ] Request details of 3rd appointment
 
 **Search URL**:
 - https://find-and-update.company-information.service.gov.uk/search/officers?q=Olamide+Adesanya
