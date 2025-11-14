@@ -1,8 +1,8 @@
 # BLKOUT Infrastructure Automation
 ## Overview & Implementation Roadmap
 
-**Version**: 1.0
-**Date**: 14 November 2025
+**Version**: 2.0
+**Date**: 14 November 2024
 **Owner**: BLKOUT Infrastructure Team
 **Status**: Planning
 
@@ -10,307 +10,321 @@
 
 ## Executive Summary
 
-This document provides an overview of BLKOUT's infrastructure automation strategy, comprising 5 interconnected systems designed to streamline operations, ensure compliance, and scale efficiently.
+This document provides an overview of BLKOUT's infrastructure automation strategy, comprising 6 interconnected systems designed to streamline operations, ensure governance compliance, and scale grant funding efforts.
 
-**Total Estimated Value**: 20-30 hours/month time saved + reduced compliance risk + increased funding success
+**Focus Areas:**
+1. **Governance & Compliance** (1 system) - Demonstrate CBS membership rule compliance
+2. **Grant Funding Platform** (5 systems) - Integrated grant discovery, application, and relationship management
+
+**Total Estimated Value**: 15-25 hours/month time saved + £50-100K funding secured Year 1
 
 **Total Implementation Effort**:
-- Phase 1 (Months 1-2): 50-70 hours → Immediate ROI
-- Phase 2 (Months 3-6): 75-100 hours → Efficiency gains
-- Phase 3 (Months 6+): 90-120 hours → Scale & integration
+- Phase 1 (Months 1-2): 30-50 hours → Immediate ROI
+- Phase 2 (Months 3-6): 60-90 hours → Automation & efficiency
+- Phase 3 (Months 6+): Optional advanced features as needed
 
 ---
 
-## The 5 Core Systems
+## The 6 Core Systems
 
-### 1. Companies House Registry Automation
-**[PRD: 01_COMPANIES_HOUSE_AUTOMATION.md](01_COMPANIES_HOUSE_AUTOMATION.md)**
+### Governance & Compliance
 
-**What it does**: Automate officer searches for due diligence, monitor member affiliations, detect conflicts of interest.
+### 1. Member Relationship Management
+**[PRD: 01_MEMBER_RELATIONSHIP_MANAGEMENT.md](01_MEMBER_RELATIONSHIP_MANAGEMENT.md)**
 
-**Why it matters**: What just took hours of Perplexity searches (9 founding members) becomes a 30-second API query. Ongoing monitoring catches new conflicts before they become issues.
+**What it does**: Simple record-keeping system to demonstrate compliance with CBS membership rules - track members, applications, voting, conflicts of interest, and generate reports for FCA annual returns.
+
+**Why it matters**: Demonstrates proper governance to FCA, makes annual returns straightforward, creates audit trail for membership decisions.
 
 **Key Features**:
-- Individual & bulk officer search via Companies House API
-- Automated weekly monitoring of members
-- Conflict detection engine
-- FCA-ready export formats
+- Member roster (current & historical)
+- Membership application tracking (demonstrate proper approval process)
+- Voting records (one-member-one-vote compliance)
+- Conflict of interest register
+- Meeting attendance tracking
+- Compliance reporting (AR30 support)
 
 **Effort**:
-- Phase 1 (Manual search tool): 20-30 hours
-- Phase 2 (Automation & monitoring): 30-40 hours
-- Phase 3 (Advanced features): 40-50 hours
+- Phase 1 (Airtable setup): 8-12 hours
+- Phase 2 (Enhanced features): 6-8 hours (optional)
 
-**ROI**: 10+ hours/year saved, zero missed conflicts
+**ROI**: AR30 prep 2+ hours → 15 minutes, governance credibility, clear audit trail
 
-**Priority**: HIGH - Replaces manual Perplexity/web searches
+**Priority**: MEDIUM - Important for good governance, not urgent until first annual return (7 months after registration)
 
-**Dependencies**: Companies House API key (free, instant)
+**Platform**: Airtable (£0-10/month) or Google Sheets (£0)
 
 ---
 
-### 2. Member Verification System
-**[PRD: 02_MEMBER_VERIFICATION_SYSTEM.md](02_MEMBER_VERIFICATION_SYSTEM.md)**
+### Grant Funding Platform
 
-**What it does**: Formalize the blkout-verification prototype into a reusable system for member confirmations, onboarding, policy acknowledgments.
+### 2. Grant Platform Core Architecture
+**[PRD: 03_GRANT_PLATFORM_CORE_ARCHITECTURE.md](03_GRANT_PLATFORM_CORE_ARCHITECTURE.md)**
 
-**Why it matters**: You got 67% response rate in 1 hour using WhatsApp + simple form. This system makes that repeatable for all future verifications.
+**What it does**: Defines the integration architecture and shared database that connects all grant funding modules - ensures data flows seamlessly between opportunity discovery, application building, pipeline tracking, and funder relationship management.
+
+**Why it matters**: Prevents siloed tools. A grant discovered automatically flows to assessment, application workspace has pre-filled data, pipeline tracks progress, analytics learn what works, and relationship management knows when to follow up.
 
 **Key Features**:
-- Reusable verification templates
-- Personalized confirmation pages (unique URL per member)
-- Real-time progress dashboard
-- Automated reminders
-- Audit trail for compliance
+- Shared database schema (opportunities, applications, funders, content_blocks, decisions)
+- Integration architecture (event-driven updates between modules)
+- Data flow documentation (how modules communicate)
+- Phased implementation approach (low-code → automation → AI)
 
 **Effort**:
-- Phase 1 (Core system): 20-30 hours
-- Phase 2 (Automation & alerts): 25-35 hours
-- Phase 3 (Advanced features): 30-40 hours
+- Conceptual framework (completed in this PRD)
+- Implementation effort distributed across individual modules
 
-**ROI**: 2-4 hours saved per verification, 100% response rate, FCA-ready audit trail
-
-**Priority**: HIGH - Immediate need (annual confirmations, onboarding)
-
-**Dependencies**: GitHub Pages (already have), Supabase (free tier)
+**Priority**: FOUNDATIONAL - Informs all other grant platform PRDs
 
 ---
 
-### 3. CBS Compliance Dashboard
-**[PRD: 03_CBS_COMPLIANCE_DASHBOARD.md](03_CBS_COMPLIANCE_DASHBOARD.md)**
+### 3. Opportunity Discovery Engine
+**[PRD: 04_OPPORTUNITY_DISCOVERY_ENGINE.md](04_OPPORTUNITY_DISCOVERY_ENGINE.md)**
 
-**What it does**: Track all CBS obligations (FCA filings, annual returns, AGM, member confirmations) with deadline alerts and document library.
+**What it does**: Automate finding grant opportunities via RSS feed monitoring, email forwarding (grants@blkout.uk.coop), and structured manual intake. Increase opportunities from ~20/year to 60-100/year.
 
-**Why it matters**: Registration is imminent. You'll have ongoing obligations. A dashboard ensures zero late filings (£100-500 penalties) and zero compliance breaches.
+**Why it matters**: Can't apply if you don't know about it. Most grants have narrow windows. Automated discovery means zero missed opportunities.
 
 **Key Features**:
-- Compliance calendar (all deadlines visible)
-- Task management (who's responsible, what's due)
-- Document library (all filings in one place)
-- Automated recurring tasks (annual return, AGM, etc.)
-- Email alerts (30/14/7 days before deadline)
+- RSS feed monitoring (Zapier watches funder websites)
+- Email forwarding integration (grants@ inbox → auto-parsed)
+- Manual intake form (team can quickly add opportunities)
+- Auto-notification to team (Slack/email)
+- Feeds directly into assessment module
 
 **Effort**:
-- Phase 1 (Notion dashboard): 4-6 hours → **QUICK WIN**
-- Phase 2 (Automation & alerts): 8-12 hours
-- Phase 3 (Custom build, if needed): 40-60 hours
+- Phase 1 (Manual form + RSS setup): 6-10 hours
+- Phase 2 (Email parsing automation): 8-12 hours
+- Phase 3 (AI-powered discovery): 15-20 hours (optional)
 
-**ROI**: Zero late filings, zero compliance incidents, audit-ready records, smooth volunteer handover
+**ROI**: 3-5x more opportunities discovered, zero manual searching, never miss a deadline
 
-**Priority**: **URGENT** - Registration completing imminently, obligations start immediately
+**Priority**: HIGH - Foundation of funding pipeline
 
-**Dependencies**: Notion account (free or £8/month team), Zapier (for Phase 2)
+**Platform**: Airtable + Zapier/Make.com (£0-30/month combined)
 
 ---
 
-### 4. Funding Pipeline Automation
-**[PRD: 04_FUNDING_PIPELINE_AUTOMATION.md](04_FUNDING_PIPELINE_AUTOMATION.md)**
+### 4. Application Builder
+**[PRD: 05_APPLICATION_BUILDER.md](05_APPLICATION_BUILDER.md)**
 
-**What it does**: Transform the Grant-funding repository into an active workflow system - track opportunities, prioritize, manage applications, analyze success rates.
+**What it does**: Content library (reusable blocks: org descriptions, team bios, case studies, policies) + application templates (Arts Council, Lottery, Trust/Foundation formats) to eliminate duplicate writing.
 
-**Why it matters**: Increase applications from ~10/year → 25-30/year, improve success rate to 35%+, never miss a deadline, learn what works.
+**Why it matters**: Every grant asks "Describe your organization" - write it once at 500w/200w/100w/50w, reuse everywhere. Reduce drafting time 40% (8-12 hours → 4-6 hours per application).
 
 **Key Features**:
-- Opportunity discovery (automated scanning + manual entry)
-- Pipeline visualization (kanban board)
-- Prioritization engine (auto-score opportunities)
-- Application templates & content library
-- Deadline alerts
-- Success analytics (which funders say yes)
+- Content library (20 initial blocks, version controlled)
+- 5 application templates (funder-specific formats)
+- Drag-and-drop composition (assemble application from blocks)
+- Word count tracking (meet funder limits)
+- Export to Word/PDF
 
 **Effort**:
-- Phase 1 (Airtable pipeline): 10-15 hours
-- Phase 2 (Automation & intelligence): 12-18 hours
-- Phase 3 (Advanced features): 20-30 hours
+- Phase 1 (Airtable library + templates): 10-15 hours
+- Phase 2 (Advanced composition tools): 12-18 hours
+- Phase 3 (AI writing assistant): 20-30 hours (optional)
 
-**ROI**: 2.5x more applications, 40% faster drafting, £50-100K funding secured in Year 1
+**ROI**: 40% faster drafting, consistent quality, zero duplicate writing
 
-**Priority**: HIGH - Critical for financial sustainability
+**Priority**: HIGH - Immediate time savings
 
-**Dependencies**: Airtable account (free or £20/month)
+**Platform**: Airtable (£0-20/month)
 
 ---
 
-### 5. Document Generation System
-**[PRD: 05_DOCUMENT_GENERATION_SYSTEM.md](05_DOCUMENT_GENERATION_SYSTEM.md)**
+### 5. Pipeline Manager & Analytics
+**[PRD: 06_PIPELINE_MANAGER_AND_ANALYTICS.md](06_PIPELINE_MANAGER_AND_ANALYTICS.md)**
 
-**What it does**: Automate creation of repetitive documents (member emails, FCA letters, reports) using templates and data merges.
+**What it does**: Kanban board tracking grants from discovery → submission → decision, deadline alerts (30d/14d/7d/3d/1d/overdue), and success analytics (which funders say yes, what works).
 
-**Why it matters**: What took 2 hours to create 8 member emails takes 5 minutes automated. Eliminate copy-paste errors, ensure consistency.
+**Why it matters**: Never miss a deadline, prioritize high-value opportunities, learn from data (30% success rate with Arts Council, 10% with trusts → focus on Arts Council).
 
 **Key Features**:
-- Template library (member comms, compliance, funders, internal)
-- Variable substitution (merge data into templates)
-- Bulk generation (10 members → 10 personalized emails in one click)
-- Multiple output formats (Word, PDF, Markdown, HTML)
-- Conditional logic (show/hide sections based on data)
+- Kanban pipeline (Discovered → Researching → Prioritized → Drafting → Review → Submitted → Awarded/Rejected)
+- Automated deadline alerts (email/Slack)
+- Success analytics dashboard (by funder, amount, project type)
+- Funder relationship scoring (1-10 based on history)
+- Predictive prioritization (auto-score opportunities)
 
 **Effort**:
-- Phase 1 (Google Docs + Autocrat): 4-6 hours → **QUICK WIN**
-- Phase 2 (Pandoc + GitHub): 12-18 hours
-- Phase 3 (Custom web app): 30-40 hours
+- Phase 1 (Airtable kanban + alerts): 8-12 hours
+- Phase 2 (Analytics dashboard): 10-15 hours
+- Phase 3 (Predictive scoring): 15-20 hours (optional)
 
-**ROI**: 5-10 hours/month saved, zero personalization errors, professional consistency
+**ROI**: Zero missed deadlines, 2.5x more applications (10→25/year), data-driven strategy
 
-**Priority**: MEDIUM-HIGH - Immediate value, low effort
+**Priority**: HIGH - Critical for managing increased volume
 
-**Dependencies**: Google Workspace (free or £4/user/month), Autocrat add-on (free)
+**Platform**: Airtable (£0-20/month)
+
+---
+
+### 6. Funder Relationship Management
+**[PRD: 07_FUNDER_RELATIONSHIP_MANAGEMENT.md](07_FUNDER_RELATIONSHIP_MANAGEMENT.md)**
+
+**What it does**: Adapt HumaniTru's donor insights model for institutional funders - relationship scoring, stewardship automation (thank you → impact updates → reapplication alerts), "Top 10 Funders to Approach This Month" AI recommendations.
+
+**Why it matters**: Increase repeat funding from 20% → 60%+. Build multi-year partnerships. Never let a funder relationship go cold.
+
+**Key Features**:
+- Relationship strength scoring (1-10 based on engagement, success, recency)
+- Stewardship automation workflows (award → 48h thank you → impact updates → reapplication)
+- AI-powered recommendations (who to approach, when, why)
+- Giving pattern analysis (Increasing, Stable, Decreasing, Lapsed)
+- "Days since last contact" alerts
+
+**Effort**:
+- Phase 1 (Manual relationship tracking): 6-10 hours
+- Phase 2 (Automated stewardship): 12-18 hours
+- Phase 3 (AI recommendations): 20-30 hours (optional)
+
+**ROI**: Repeat funding 20% → 60%+, multi-year partnerships, warm funder relationships
+
+**Priority**: MEDIUM-HIGH - Strategic value, builds on other modules
+
+**Platform**: Airtable (integrates with other grant modules)
 
 ---
 
 ## System Interconnections
 
-These systems are designed to work together:
+### Grant Platform Integration
+
+All grant platform modules share a single database:
 
 ```
-┌──────────────────────────────────────────────────────────────┐
-│                    CBS Compliance Dashboard                   │
-│  (Central hub - tracks deadlines, triggers verifications)    │
-└───────┬─────────────────────┬────────────────────┬───────────┘
-        │                     │                    │
-        │                     │                    │
-        ▼                     ▼                    ▼
-┌───────────────┐   ┌──────────────────┐   ┌─────────────────┐
-│   Member      │   │  Document        │   │  Companies      │
-│ Verification  │   │  Generation      │   │  House Auto     │
-│               │◄──┤                  │◄──┤                 │
-│ (Collect      │   │ (Create emails,  │   │ (Pull member    │
-│  member data) │   │  letters, reports)  │  affiliations)  │
-└───────┬───────┘   └──────────────────┘   └─────────────────┘
-        │                     ▲
-        │                     │
-        └─────────────────────┘
-        (Responses update member records)
-
-┌─────────────────────────────────────────────────────────────┐
-│              Funding Pipeline Automation                     │
-│  (Pulls org data from member system, tracks funding)        │
-└─────────────────────────────────────────────────────────────┘
-        │
-        ▼
-┌──────────────────┐
-│  Document        │
-│  Generation      │
-│ (Grant letters,  │
-│  reports)        │
-└──────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│          SHARED DATABASE (Airtable/PostgreSQL)           │
+│  opportunities | applications | funders | content_blocks│
+│  decisions | individual_votes | conflicts | meetings    │
+└──────┬─────────────┬──────────────┬──────────────┬──────┘
+       │             │              │              │
+       ▼             ▼              ▼              ▼
+┌────────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────┐
+│Opportunity │ │Application│ │ Pipeline │ │   Funder     │
+│ Discovery  │→│  Builder  │→│ Manager  │→│Relationship  │
+│            │ │           │ │          │ │   Mgmt       │
+└────────────┘ └──────────┘ └──────────┘ └──────────────┘
 ```
 
 **Example workflow:**
 
-1. **CBS Compliance Dashboard** alerts: "Annual member confirmation due in 30 days"
-2. **Companies House Automation** runs fresh search on all members (get latest affiliations)
-3. **Member Verification System** generates personalized confirmation pages (using data from step 2)
-4. **Document Generation** creates confirmation emails (8 personalized emails in 5 min)
-5. Send emails → members confirm → responses flow back to **Member Verification**
-6. **Compliance Dashboard** marks task complete, stores audit trail
+1. **Opportunity Discovery** finds grant (RSS feed alert: Arts Council England deadline 15 Jan)
+2. Creates record in `opportunities` table → Status: Discovered
+3. **Pipeline Manager** shows new opportunity in kanban → Team moves to "Researching"
+4. Auto-scoring algorithm evaluates (£50K, Arts Council, aligned with mission) → Priority: High
+5. Team moves to "Drafting" → **Application Builder** creates workspace
+6. Pre-fills content (pulls "Org Description - 200w" from content library)
+7. Drafts application → Submits → **Pipeline Manager** tracks status
+8. **Decision recorded** → Awarded £40K → **Funder Relationship Management** triggers:
+   - Thank you email (48 hours)
+   - Impact update reminder (Month 1)
+   - Reapplication alert (Year 2)
+9. **Analytics learn**: Arts Council applications = 40% success rate → Prioritize similar opportunities
+
+### Member Management Integration
+
+**Member Relationship Management** operates independently but can share data:
+- Export member list → Application Builder (team bios for grant applications)
+- Conflict register → Due diligence for funder partnerships
+- Voting records → Governance section of grant applications ("Democratic structure")
 
 ---
 
 ## Implementation Roadmap
 
-### Month 1: Foundation & Quick Wins
+### Month 1: Foundation (30-40 hours)
 
-**Week 1:**
-- ✅ CBS Compliance Dashboard (Notion) - 6 hours
-- ✅ Document Generation (Google Docs + Autocrat) - 6 hours
-- **Total**: 12 hours, **HIGH impact**
-
-**Outcome**:
-- Never miss CBS deadline
-- Generate docs 10x faster
-
-**Week 2-4:**
-- Companies House API integration (manual search tool) - 20-30 hours
-- Member Verification System (formalize prototype) - 20-30 hours
-- **Total**: 40-60 hours
+**Week 1-2: Core Setup**
+- Member Relationship Management (Airtable setup) - 8-12 hours
+- Grant Platform Core Architecture (database design) - 6-8 hours
+- Opportunity Discovery Engine (manual form + RSS) - 6-10 hours
+- **Total**: 20-30 hours
 
 **Outcome**:
-- Instant officer searches (vs. hours manual)
-- Reusable verification system
+- Member records organized, conflicts imported
+- Grant opportunities flowing into system
+- Foundation for remaining modules
+
+**Week 3-4: Build Out**
+- Application Builder (content library + templates) - 10-15 hours
+- Pipeline Manager (kanban + basic alerts) - 8-12 hours
+- **Total**: 18-27 hours
+
+**Outcome**:
+- Can draft applications 40% faster
+- Tracking all opportunities in pipeline
+- Never miss a deadline
 
 ---
 
-### Months 2-3: Automation & Efficiency
+### Months 2-3: Automation (60-80 hours)
 
-**Funding Pipeline** (Phase 1) - 10-15 hours
-- Set up Airtable pipeline
-- Create templates
-- Import existing grant research
+**Opportunity Discovery** (Phase 2) - 8-12 hours
+- Email parsing automation
+- Advanced RSS monitoring
+- Notification workflows
 
-**Companies House** (Phase 2) - 30-40 hours
-- Automated weekly monitoring
-- Bulk search
-- Conflict detection
+**Application Builder** (Phase 2) - 12-18 hours
+- Advanced composition tools
+- Export automation
+- Template library expansion
 
-**Member Verification** (Phase 2) - 25-35 hours
-- Automated reminders
-- Email integration
-- Conditional logic
+**Pipeline Manager** (Phase 2) - 10-15 hours
+- Advanced analytics dashboard
+- Success pattern analysis
+- Automated deadline escalations
 
-**CBS Compliance** (Phase 2) - 8-12 hours
-- Automated alerts
-- Approval workflows
+**Funder Relationship Management** (Phase 1-2) - 18-28 hours
+- Relationship tracking setup
+- Stewardship automation workflows
+- Basic recommendations
 
-**Total**: 73-102 hours
+**Total**: 48-73 hours
 
 **Outcome**:
-- Proactive monitoring (no more reactive scrambling)
-- 25+ grant applications/year pipeline
-- Automated reminders (less manual follow-up)
+- Fully automated opportunity discovery
+- Data-driven funding strategy
+- Warm funder relationships maintained automatically
 
 ---
 
-### Months 4-6: Intelligence & Integration
+### Months 4-6: Intelligence & Optimization (Optional, 50-80 hours)
 
-**Funding Pipeline** (Phase 2) - 12-18 hours
-- Automated opportunity discovery
-- Success analytics
-- Funder relationship tracking
+**AI-Powered Features** (Phase 3 across modules):
+- Opportunity Discovery: AI scans funder websites for new grants
+- Application Builder: AI writing assistant (draft sections)
+- Pipeline Manager: Predictive success scoring
+- Funder Relationship: AI relationship insights and recommendations
 
-**Document Generation** (Phase 2) - 12-18 hours
-- Pandoc + GitHub integration
-- Advanced conditionals
-- Email auto-send
-
-**Total**: 24-36 hours
-
-**Outcome**:
-- Learn what works (data-driven funding strategy)
-- Fully automated document workflows
-
----
-
-### Months 6+: Scale & Advanced Features (As Needed)
-
-All systems have Phase 3 features (AI, advanced analytics, custom builds) that can be pursued if/when needed. Not required for initial value.
+**Only build Phase 3 if:**
+- Phase 1-2 proves valuable (measurable ROI)
+- Team capacity available
+- Clear use case for advanced features
 
 ---
 
 ## Prioritization: What to Build First
 
-### Tier 1: URGENT (Do First)
-**CBS Compliance Dashboard** - Registration imminent, obligations start immediately
-- Effort: 6 hours (Notion)
-- Value: Avoid £100-500 late filing penalties, zero compliance risk
+### Tier 1: FOUNDATION (Do First)
+**Opportunity Discovery + Pipeline Manager** - Can't manage what you don't track
+- Effort: 14-22 hours combined (Phase 1)
+- Value: 3x more opportunities, zero missed deadlines, clear pipeline visibility
 
-### Tier 2: HIGH ROI (Do Next)
-**Document Generation** - Immediate time savings
-- Effort: 6 hours (Google Docs + Autocrat)
-- Value: 5-10 hours/month saved
-
-**Companies House Automation** - Replaces manual searches
-- Effort: 20-30 hours (Phase 1)
-- Value: 10+ hours/year saved, ongoing monitoring
-
-**Member Verification System** - Formalize successful prototype
-- Effort: 20-30 hours (Phase 1)
-- Value: Annual confirmations, onboarding, audit trail
+### Tier 2: EFFICIENCY (Do Next)
+**Application Builder** - Immediate time savings
+- Effort: 10-15 hours (Phase 1)
+- Value: 40% faster drafting, consistent quality
 
 ### Tier 3: STRATEGIC (Important but Less Urgent)
-**Funding Pipeline Automation** - Critical for growth but can start manually
-- Effort: 10-15 hours (Phase 1)
-- Value: £50-100K funding in Year 1, 2.5x more applications
+**Funder Relationship Management** - Builds on foundation
+- Effort: 6-10 hours (Phase 1)
+- Value: Repeat funding 20% → 60%+, long-term partnerships
+
+**Member Relationship Management** - Governance compliance
+- Effort: 8-12 hours (Phase 1)
+- Value: Easy AR30 prep, audit trail, good governance
 
 ---
 
@@ -320,21 +334,22 @@ All systems have Phase 3 features (AI, advanced analytics, custom builds) that c
 
 | Metric | Current | Target |
 |--------|---------|--------|
-| **Compliance** | Not CBS yet | Zero late filings, zero incidents |
-| **Time saved** | N/A | 20-30 hours/month |
+| **Grant opportunities discovered** | ~20/year | 60-100/year |
+| **Grant applications submitted** | ~10/year | 25/year |
+| **Success rate** | Unknown | 30-35% |
 | **Funding secured** | £0 | £50-100K |
-| **Grant applications** | ~10/year | 25/year |
-| **Member verifications** | Manual (2 hours each) | Automated (5 min setup) |
-| **Document generation** | Manual (30-120 min each) | Automated (5 min each) |
-| **Officer searches** | Manual Perplexity (15-20 min each) | Automated API (<30 sec each) |
+| **Application drafting time** | 8-12 hours | 4-6 hours |
+| **Missed deadlines** | Unknown | 0 |
+| **Repeat funders** | 20% | 60%+ |
+| **AR30 prep time** | N/A (not CBS yet) | <15 minutes |
 
 ### Qualitative Success
 
-- **Confidence**: Board feels confident in compliance status
-- **Scalability**: Systems support growth from 9 → 50 → 100 members
-- **Knowledge retention**: Volunteer handover takes <1 hour (systems are documented, intuitive)
-- **Professionalism**: All external communications (members, funders, FCA) are consistent, polished
-- **Data-driven**: Decisions informed by analytics (not gut feelings)
+- **Funding pipeline visibility**: Board knows exactly what's in play, what's pending, what's likely
+- **Data-driven decisions**: "We succeed with Arts Council (40%) but not trusts (10%) → focus efforts"
+- **Funder relationships**: "Arts Council knows us, we've delivered 3 projects, they email us about new opportunities"
+- **Governance confidence**: "FCA audit? Our records are clean, complete, and instantly accessible"
+- **Scalability**: Systems support 10 applications/year or 100 applications/year with same effort
 
 ---
 
@@ -342,95 +357,84 @@ All systems have Phase 3 features (AI, advanced analytics, custom builds) that c
 
 ### Financial Investment
 
-**Low-Code Approach (Recommended for Year 1):**
-- Notion (CBS Compliance): £0-8/month
-- Airtable (Funding Pipeline): £0-20/month
-- Google Workspace (Document Gen): £0-4/user/month
-- Supabase (Member Verification): £0 (free tier sufficient)
-- **Total**: £0-32/month (£0-384/year)
+**Phase 1 (Low-Code Recommended):**
+- Airtable: £0-20/month (grant platform + member management)
+- Zapier/Make.com: £0-20/month (automation workflows)
+- **Total**: £0-40/month (£0-480/year)
 
-**Custom Build Approach (Year 2+, if needed):**
+**Phase 2 (Automation):**
+- Same tools, higher tiers if needed: £20-60/month total
+
+**Phase 3 (Custom Build, if needed):**
 - Hosting: £0 (Vercel free tier)
 - Database: £0-25/month (Supabase/Railway)
-- Email: £0-20/month (SendGrid/Resend free tiers)
-- **Total**: £0-45/month (£0-540/year)
+- AI APIs: £10-50/month (OpenAI/Anthropic)
+- **Total**: £10-75/month (£120-900/year)
 
-**ROI**: Even at maximum spend (£384/year), if systems save 25 hours/month @ £20/hour volunteer time value = £6,000/year value → **15x ROI**
+**ROI**: Even at £480/year Phase 1 spend:
+- 20 hours/month time saved @ £20/hour value = £4,800/year → **10x ROI**
+- £50-100K funding secured → **100-200x ROI**
 
 ### Human Resources
 
 **Phase 1 (Months 1-2):**
-- Technical lead: 50-70 hours (setup, configuration, training)
-- Content creator: 10-15 hours (write templates, populate content libraries)
-- Team training: 5 hours (onboarding all users)
-- **Total**: 65-90 hours
+- Technical lead: 30-50 hours (setup, configuration)
+- Content creator: 10-15 hours (write content library blocks)
+- Team training: 3-5 hours
+- **Total**: 43-70 hours
 
 **Phase 2 (Months 3-6):**
-- Technical lead: 75-100 hours (automation, integrations)
-- Content creator: 10-15 hours (expand templates)
-- **Total**: 85-115 hours
+- Technical lead: 60-90 hours (automation)
+- Content creator: 10-15 hours (expand library)
+- **Total**: 70-105 hours
 
 **Ongoing (Year 2+):**
 - Maintenance: 5-10 hours/month
-- Template updates: 2-5 hours/month
+- Content updates: 2-5 hours/month
 - **Total**: 7-15 hours/month
-
-**Volunteer skills needed**:
-- Technical: Python/JavaScript (for custom builds) OR willingness to learn Notion/Airtable (for low-code)
-- Content: Strong writer (for templates)
-- Project management: Coordinator to oversee implementation
-
-**Can outsource**: If volunteer capacity is limited, all systems can be built by freelancer (~£30-50/hour UK rate). Phase 1 = £1,500-3,500 outsourced cost.
 
 ---
 
 ## Risk Assessment
 
-### Overall Risks (All Systems)
+### Risk 1: Over-Engineering
+**Likelihood**: Medium (user has already flagged this twice!)
+**Impact**: Medium (wasted effort)
 
-**Risk 1: Volunteer Capacity / Burnout**
-- **Likelihood**: Medium-High
-- **Impact**: High (systems don't get built)
-- **Mitigation**:
-  - Prioritize ruthlessly (Tier 1 first)
-  - Low-code approach (minimize technical burden)
-  - Outsource if budget available
-  - Phased rollout (don't do everything at once)
+**Mitigation**:
+- Start with absolute minimum (Phase 1 only)
+- Validate value before building Phase 2
+- User feedback loop: "Is this actually useful?"
+- Research requirements before building (learned from CBS Compliance Dashboard mistake)
 
-**Risk 2: System Abandonment (Built but Not Used)**
-- **Likelihood**: Medium
-- **Impact**: High (wasted effort)
-- **Mitigation**:
-  - User-centered design (involve team from start)
-  - Training (1-hour workshops per system)
-  - Make it easier than manual (clear value prop)
-  - Monthly check-ins (are people using it? Why/why not?)
+### Risk 2: Low Adoption (Built but Not Used)
+**Likelihood**: Medium
+**Impact**: High
 
-**Risk 3: Over-Engineering (Complexity Spiral)**
-- **Likelihood**: Medium
-- **Impact**: Medium (spend time on features no one needs)
-- **Mitigation**:
-  - Start simple (Phase 1 = MVP, validate value)
-  - Only build Phase 2/3 if Phase 1 proves valuable
-  - Measure ROI (if not saving time, don't expand)
-  - User feedback loop (what do they actually need?)
+**Mitigation**:
+- User-centered design (involve grant writers from start)
+- Make it easier than manual (clear value prop)
+- Training workshops (1 hour per module)
+- Monthly check-ins (usage metrics, feedback)
 
-**Risk 4: Data Quality Issues**
-- **Likelihood**: Medium
-- **Impact**: Medium (garbage in, garbage out)
-- **Mitigation**:
-  - Validation rules (required fields, format checks)
-  - Training (how to enter data correctly)
-  - Regular audits (quarterly data cleanup)
-  - Clear ownership (who's responsible for data quality)
+### Risk 3: Data Quality Issues
+**Likelihood**: Medium
+**Impact**: Medium (bad data → bad decisions)
 
-**Risk 5: Integration Complexity**
-- **Likelihood**: Low (systems designed to be independent initially)
-- **Impact**: Medium (if integrations fail, systems work standalone)
-- **Mitigation**:
-  - Build systems independently first
-  - Integrate in Phase 2 (once both systems proven)
-  - Loose coupling (APIs, webhooks, not tight dependencies)
+**Mitigation**:
+- Required fields and validation rules
+- Clear data entry guidelines
+- Quarterly data audits
+- One person owns data quality
+
+### Risk 4: Integration Complexity
+**Likelihood**: Low (shared database architecture)
+**Impact**: Low (modules can work standalone if needed)
+
+**Mitigation**:
+- Shared database from start (Airtable makes this easy)
+- Modules designed independently but connected
+- Can use standalone if integration fails
 
 ---
 
@@ -439,48 +443,42 @@ All systems have Phase 3 features (AI, advanced analytics, custom builds) that c
 For each system, ask:
 
 **1. Can we buy this?**
-- If yes: Is cost <£500/year AND saves >50 hours/year? → **Buy**
-- If no or expensive: Consider build
+- Generic CRM (£500-2K/year): Too broad, doesn't fit grant workflow
+- Grant-specific software (£1-5K/year): Exists but often US-focused, expensive for small org
+- **Decision**: Build custom for BLKOUT's specific needs
 
-**2. Can we build this with low-code?**
-- If yes: Is setup <20 hours? → **Build (low-code)**
-- If no: Consider custom build
+**2. Can we build with low-code?**
+- Airtable: Relational database, kanban, automations, £0-40/month
+- **Decision**: YES - Phase 1 = Airtable (prove value, fast to build)
 
-**3. Is this critical for compliance/operations?**
-- If yes (e.g., CBS Compliance): → **Must build or buy**
-- If no: Can we skip? (Funding pipeline is important but not compliance-critical)
+**3. Is this critical?**
+- Grant platform: STRATEGIC (critical for funding, not compliance-critical)
+- Member management: GOVERNANCE (good practice, not urgent until AR30)
+- **Decision**: Prioritize grant platform (revenue-generating)
 
-**4. What's the manual process cost?**
-- If manual = 1 hour/month → Skip automation (not worth it)
-- If manual = 10+ hours/month → **Automate**
-
-**Applied to our 5 systems:**
-
-| System | Buy Option? | Build Complexity | Criticality | Manual Cost | Decision |
-|--------|-------------|------------------|-------------|-------------|----------|
-| CBS Compliance | £500-2K/year (overkill) | LOW (Notion 6h) | CRITICAL | High | **BUILD (low-code)** |
-| Companies House | £500-2K/year | MEDIUM (30h) | High | High | **BUILD (API)** |
-| Member Verification | N/A (unique to process) | MEDIUM (20-30h) | High | High | **BUILD** |
-| Funding Pipeline | £500-2K/year (overkill) | LOW (Airtable 15h) | Strategic | Medium | **BUILD (low-code)** |
-| Document Gen | N/A (unique templates) | LOW (6h) | Medium | High | **BUILD (low-code)** |
-
-**Conclusion**: All 5 systems are best built (using low-code where possible) rather than bought.
+**4. What's the manual cost?**
+- Grant applications: 10-20 hours/month currently, could be 40+ hours/month if scaled
+- **Decision**: HIGH manual cost → Automate
 
 ---
 
 ## Next Steps (Immediate Actions)
 
 ### This Week:
-1. **Set up CBS Compliance Dashboard** (Notion, 6 hours) - **DO FIRST**
-2. **Set up Document Generation** (Google Docs + Autocrat, 6 hours)
+1. ✅ **PRDs completed** (6 systems documented)
+2. **Review & feedback** - Do these PRDs match vision?
+3. **Prioritize** - Which module to build first?
 
-### Next 2 Weeks:
-3. **Get Companies House API key** (register at developer.company-information.service.gov.uk)
-4. **Formalize Member Verification System** (convert prototype to reusable)
+### Next 2 Weeks (If proceeding):
+4. **Set up Airtable workspace** (grant platform database)
+5. **Build Opportunity Discovery form** (manual intake to start)
+6. **Build basic Pipeline kanban** (track what's in play)
 
 ### Month 2:
-5. **Set up Funding Pipeline** (Airtable)
-6. **Begin automation** (Phase 2 features for highest-ROI systems)
+7. **Import existing grant research** (populate pipeline)
+8. **Create content library** (20 initial blocks)
+9. **Set up RSS monitoring** (automate discovery)
+10. **Build Application Builder workspace**
 
 ---
 
@@ -488,52 +486,62 @@ For each system, ask:
 
 Before proceeding, clarify:
 
-1. **Who will lead implementation?** (Technical volunteer? Outsourced? Mixed?)
-2. **What's the budget?** (£0 = low-code only, £1-3K = can outsource some custom builds)
-3. **What's the timeline expectation?** (3 months aggressive, 6 months realistic, 12 months relaxed)
-4. **Which system is most urgent?** (Assumption: CBS Compliance, but confirm)
-5. **Are there other automation needs not covered?** (Accounting? Fundraising CRM? HR/volunteer management?)
+1. **Do these PRDs align with vision?** Any missing pieces or wrong assumptions?
+2. **What's priority order?** (Recommendation: Discovery + Pipeline first, then Application Builder)
+3. **Who will lead implementation?** (Technical volunteer? Outsourced? Mix?)
+4. **What's the timeline?** (3 months aggressive, 6 months realistic)
+5. **Budget available?** (£0 = free tier Airtable, £20-40/month = more headroom)
+6. **Member management: Do we have CBS rules to review?** (Need to confirm membership types, voting requirements, conflict policies before building)
 
 ---
 
 ## Conclusion
 
-These 5 systems form a coherent infrastructure automation strategy for BLKOUT:
+These 6 systems form an integrated infrastructure for BLKOUT:
 
-- **Compliance-focused** (CBS Dashboard, Companies House, Member Verification)
-- **Growth-oriented** (Funding Pipeline)
-- **Efficiency-driven** (Document Generation)
+**Governance:**
+- Member Relationship Management - Demonstrate CBS compliance
 
-**Recommended approach**:
-- **Month 1**: Build quick wins (CBS Compliance, Document Gen) - 12 hours, massive ROI
-- **Months 2-3**: Build core systems (Companies House, Member Verification, Funding Pipeline) - 60-75 hours
-- **Months 4+**: Automate & integrate (Phase 2 features) - as capacity allows
+**Grant Funding (Integrated Platform):**
+- Core Architecture - Shared database & integration
+- Opportunity Discovery - Find 3-5x more grants
+- Application Builder - Draft 40% faster
+- Pipeline Manager - Track, analyze, never miss deadlines
+- Funder Relationship Management - Build long-term partnerships
 
-**Expected outcome**:
-- Zero compliance risk
-- 20-30 hours/month saved
-- £50-100K funding secured in Year 1
-- Scalable infrastructure supporting growth to 50-100 members
+**Recommended approach:**
+- **Month 1**: Build foundation (Discovery, Pipeline, Application Builder) - 30-40 hours
+- **Months 2-3**: Automate & integrate (Phase 2 features) - 60-80 hours
+- **Months 4+**: Advanced features only if proven valuable
+
+**Expected outcome:**
+- £50-100K funding secured Year 1
+- 20 hours/month time saved
+- Data-driven funding strategy
+- Good governance ready for FCA
+- Scalable to 100+ applications/year
 
 ---
 
 **Document Control:**
-- **Version**: 1.0
-- **Last Updated**: 14 November 2025
-- **Next Review**: Monthly (track progress, adjust priorities)
+- **Version**: 2.0 (Updated: Removed CBS Compliance Dashboard, Companies House Automation, Member Verification System; Added Member Relationship Management and Grant Platform PRDs)
+- **Last Updated**: 14 November 2024
+- **Next Review**: After user feedback on PRD suite
 - **Owner**: BLKOUT Infrastructure Team
-- **Stakeholders**: Board, compliance officer, fundraising lead, all volunteers
 
 ---
 
 ## Appendix: PRD Quick Reference
 
-1. **[01_COMPANIES_HOUSE_AUTOMATION.md](01_COMPANIES_HOUSE_AUTOMATION.md)** - Automate officer searches, monitor affiliations (20-90h)
-2. **[02_MEMBER_VERIFICATION_SYSTEM.md](02_MEMBER_VERIFICATION_SYSTEM.md)** - Formalize blkout-verification prototype (20-90h)
-3. **[03_CBS_COMPLIANCE_DASHBOARD.md](03_CBS_COMPLIANCE_DASHBOARD.md)** - Track CBS obligations, never miss deadline (6-60h)
-4. **[04_FUNDING_PIPELINE_AUTOMATION.md](04_FUNDING_PIPELINE_AUTOMATION.md)** - Manage grants pipeline, increase success (10-45h)
-5. **[05_DOCUMENT_GENERATION_SYSTEM.md](05_DOCUMENT_GENERATION_SYSTEM.md)** - Automate repetitive docs, save hours (6-65h)
+### Governance & Compliance
+1. **[01_MEMBER_RELATIONSHIP_MANAGEMENT.md](01_MEMBER_RELATIONSHIP_MANAGEMENT.md)** - CBS compliance record-keeping (8-20h)
 
-**Total effort across all systems**:
-- Phase 1: 62-290 hours (spread across 5 systems)
-- Recommended: Start with Tier 1 & 2 (50-70 hours for massive immediate value)
+### Grant Funding Platform
+2. **[03_GRANT_PLATFORM_CORE_ARCHITECTURE.md](03_GRANT_PLATFORM_CORE_ARCHITECTURE.md)** - Integration architecture (conceptual)
+3. **[04_OPPORTUNITY_DISCOVERY_ENGINE.md](04_OPPORTUNITY_DISCOVERY_ENGINE.md)** - Find 3-5x more grants (6-40h)
+4. **[05_APPLICATION_BUILDER.md](05_APPLICATION_BUILDER.md)** - Draft 40% faster with content library (10-60h)
+5. **[06_PIPELINE_MANAGER_AND_ANALYTICS.md](06_PIPELINE_MANAGER_AND_ANALYTICS.md)** - Track opportunities, analyze success (8-45h)
+6. **[07_FUNDER_RELATIONSHIP_MANAGEMENT.md](07_FUNDER_RELATIONSHIP_MANAGEMENT.md)** - Build long-term funder partnerships (6-60h)
+
+**Total Phase 1 effort**: 38-70 hours across all 6 systems
+**Recommended start**: Systems #3, #4, #5 (grant platform core) - 24-37 hours for immediate funding impact
