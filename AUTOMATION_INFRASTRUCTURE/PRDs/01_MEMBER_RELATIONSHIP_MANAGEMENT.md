@@ -84,11 +84,16 @@ members
 ├── name (text)
 ├── email (email)
 ├── phone (phone)
-├── membership_type (select: Founding, Regular, Associate)
+├── membership_type (select: Founder Member, Member)
+├── member_category (select: Natural Person, Corporate Body, Nominee of Unincorporated Body)
 ├── join_date (date)
 ├── leave_date (date, nullable)
 ├── status (select: Active, Inactive, Left)
-├── shares_owned (number, if applicable)
+├── shares_owned (number) — minimum 1 non-withdrawable share
+├── share_value (formula: shares_owned × £10)
+├── is_director (checkbox)
+├── director_appointment_date (date, nullable)
+├── director_type (select: Elected, Independent Non-Executive, nullable)
 ├── notes (long text)
 └── linked: applications (many-to-one), votes (one-to-many), conflicts (one-to-many)
 ```
@@ -165,17 +170,23 @@ decisions
 ├── title (text, e.g., "Approve 2024 budget")
 ├── description (long text)
 ├── vote_date (date)
-├── meeting_type (select: AGM, Board Meeting, Special Resolution)
+├── meeting_type (select: AGM, Board Meeting, Special General Meeting)
+├── resolution_type (select: Ordinary, Extraordinary (75%), Special)
 ├── outcome (select: Passed, Failed, Deferred)
-├── votes_required (number, e.g., simple majority, 2/3, etc.)
-└── linked: individual_votes (one-to-many)
+├── votes_for (number)
+├── votes_against (number)
+├── votes_abstain (number)
+├── total_eligible_voters (number)
+├── percentage_for (formula: votes_for / (votes_for + votes_against) × 100)
+└── linked: individual_votes (one-to-many), recusals (one-to-many)
 
 individual_votes
 ├── id
 ├── decision (linked to decisions)
 ├── member (linked to members)
-├── vote (select: For, Against, Abstain, Absent)
-└── timestamp (datetime)
+├── vote (select: For, Against, Abstain, Absent, Recused)
+├── timestamp (datetime)
+└── notes (text, nullable)
 ```
 
 **Reports:**
@@ -193,13 +204,17 @@ individual_votes
 ### 4. Conflict of Interest Tracking
 **Priority: P1 (Should-have)**
 
-Maintain register of declared conflicts:
-- Member name
-- Organization/interest declared
-- Nature of conflict (Director, Shareholder, Employee, Family member, etc.)
-- Declared date
-- Status (Current, Historical, Resolved)
-- Decisions where member recused
+Maintain register of declared conflicts (per CBS Rule 95):
+
+**What must be declared:**
+- Any personal, material, or financial interest (direct or indirect)
+- Interests of **Connected Persons**: family/household members OR business associates
+- **NOT required**: <1% shareholding in a company (Rule 3 definition)
+
+**Recusal requirements (Rule 96):**
+- Conflicted director absent from discussion
+- Does not vote
+- Not counted for quorum
 
 **Data model:**
 ```
@@ -207,8 +222,10 @@ conflicts
 ├── id
 ├── member (linked to members)
 ├── organization (text, e.g., "Northants Rainbow Collective CIC")
-├── nature (select: Director, Shareholder, Employee, Family, Other)
+├── nature (select: Director, Shareholder (>1%), Employee, Family/Household, Business Associate, Other)
 ├── description (long text)
+├── is_connected_person (checkbox) — marks if conflict is via Connected Person rather than direct
+├── connected_person_name (text, nullable)
 ├── declared_date (date)
 ├── status (select: Current, Historical, Resolved)
 ├── companies_house_number (text, nullable)
@@ -218,6 +235,7 @@ recusals
 ├── id
 ├── conflict (linked to conflicts)
 ├── decision (linked to decisions)
+├── recusal_confirmed (checkbox) — director confirmed absence from discussion
 └── recusal_notes (long text)
 ```
 
@@ -235,29 +253,35 @@ recusals
 ### 5. Meeting Attendance
 **Priority: P2 (Nice-to-have)**
 
-Track AGM and board meeting attendance:
-- Meeting date, type, purpose
-- Who attended (in person, remote, proxy)
-- Quorum verification
-- Minutes/notes link
+Track AGM and board meeting attendance (per CBS Rules 36, 44, 92):
+
+**Meeting requirements:**
+- **AGM**: Required within 6 months of end of financial year (Rule 36)
+- **Quorum (general meetings)**: 3 Members OR 10% of membership, whichever is greater (Rule 44)
+- **Quorum (board meetings)**: 50% of Directors OR 3 Directors, whichever is greater (Rule 92)
+- **Notice period**: 14 Clear Days for general meetings (Rule 39), reasonable notice for board meetings (Rule 86)
 
 **Data model:**
 ```
 meetings
 ├── id
 ├── date (date)
-├── type (select: AGM, Board Meeting, Special Meeting)
+├── type (select: AGM, Board Meeting, Special General Meeting)
 ├── purpose (text)
-├── quorum_required (number)
-├── quorum_met (checkbox, formula)
+├── notice_sent_date (date)
+├── quorum_required (number, formula based on type)
+├── quorum_present (number, calculated from attendance)
+├── quorum_met (checkbox, formula: quorum_present >= quorum_required)
 ├── minutes_link (URL)
-└── linked: attendance (one-to-many)
+├── chair (linked to members)
+└── linked: attendance (one-to-many), decisions (one-to-many)
 
 attendance
 ├── id
 ├── meeting (linked to meetings)
 ├── member (linked to members)
-└── attendance_type (select: In Person, Remote, Proxy, Absent)
+├── attendance_type (select: In Person, Remote, Proxy, Absent)
+└── proxy_for (linked to members, nullable) — if attending as proxy for another member
 ```
 
 **Reports:**
@@ -543,48 +567,133 @@ Generate reports for FCA annual return and internal governance:
 
 ---
 
-## Open Questions
+## CBS Rules Summary (Answers to Open Questions)
 
-1. **Membership types:** What are the actual categories per CBS rules? (Founding, Regular, Associate, Honorary, etc.)
-2. **Share ownership:** Does BLKOUT CBS structure include shares? If so, how are they allocated?
-3. **Voting thresholds:** What decisions require simple majority vs. 2/3 vs. unanimous? (Import from rules)
-4. **Conflict policy:** What's the actual recusal process per CBS rules?
-5. **Meeting cadence:** How often are AGMs and board meetings? (Affects usefulness of meeting tracking)
+Based on BLKOUT Media Limited's adopted CBS rules:
 
-**Next step:** Review CBS rules to answer above questions before building.
+### 1. Membership Types
+- **Founder Members**: The 9 subscribers to the rules for registration purposes
+- **Members**: Natural persons age 16+, corporate bodies, or nominees of unincorporated bodies
+- **No membership tiers**: All members have equal voting rights (one-member-one-vote, Rule 56)
+
+**For database:** `membership_type` field: "Founder Member" or "Member"
+
+### 2. Share Ownership Structure
+- **Each share**: £10 nominal value (Rule 22)
+- **Minimum shareholding**: 1 non-Withdrawable share (the membership share) + any additional shares per Board determination (Rule 23)
+- **Maximum shareholding**: No limit (Rule 24)
+- **Payment**: Shares paid in full on allotment (Rule 23)
+- **Withdrawal**: Members can withdraw shares (except the 1 non-withdrawable membership share) with 3 months' notice (Rule 28)
+
+**For database:** Track `shares_owned` (number field), note that at least 1 is always non-withdrawable
+
+### 3. Voting Thresholds
+- **Ordinary resolution**: Simple majority of votes cast (Rule 63)
+  - Used for: Most decisions
+- **Extraordinary Resolution**: 75%+ of votes cast (Rules 62-63)
+  - Required for: Member expulsion (Rule 15), rule amendments (Rule 62a-ii), winding up (Rule 62a-iii)
+- **Special resolution**: Per Co-operative and Community Benefit Societies Act 2014 sections 43-44, 109-114, 119-120 (Rule 64)
+  - Required for: Amalgamation, transfer of engagements, conversion to company
+
+**For database:** `decisions` table should include `votes_required` field: "Simple majority", "75% (Extraordinary)", "Special resolution"
+
+### 4. Conflict of Interest Policy
+**Declaration requirement (Rule 95):**
+- Directors must declare any personal, material, or financial interest (direct or indirect)
+- Includes interests of **Connected Persons**: family/household members OR business associates (NOT <1% shareholders in companies)
+- **Exception**: Can vote on share interest payments (affects all members equally)
+
+**Recusal process (Rule 96):**
+- Conflicted director must be **absent from discussion**
+- Conflicted director **does not vote**
+- Conflicted director **not counted for quorum**
+- Unconflicted directors must authorize that this is in Society's best interests
+
+**For database:**
+- `conflicts` table tracks all declared interests
+- `recusals` table links conflicts to specific decisions
+- Nature of conflict: Director, Shareholder, Employee, Family member, Business associate, Other
+
+### 5. Meeting Cadence
+- **Annual General Meeting**: Required within 6 months of end of financial year (Rule 36)
+- **Board meetings**: No mandated frequency - "as they think fit" (Rule 87)
+  - Any director can call a meeting (Rule 86)
+- **General meetings**: Can be called by Board, or by requisition of 1/10th of members (min 3) (Rule 38)
+
+**For database:** `meetings` table types: "AGM", "Board Meeting", "Special General Meeting"
+
+### 6. Board Composition (Rules 66-73)
+- **Minimum**: 3 Directors (must be Members age 16+)
+- **Maximum**: Determined by general meeting
+- **Election**: By and from Members
+- **Retirement cycle**: One-third retire at each AGM (longest serving first, Rule 70)
+- **Independent non-executive directors**: Up to 2 (need not be Members, max 49% of board total, Rule 71)
+- **Casual vacancies**: Can be filled by co-option until next AGM (Rule 73)
+
+**For database:** Track director election/appointment date, retirement cycle, whether independent non-executive
+
+### 7. Quorum Requirements
+- **General meetings**: 3 Members OR 10% of membership, whichever is greater (Rule 44)
+- **Board meetings**: 50% of Directors OR 3 Directors, whichever is greater (Rule 92)
+
+**For database:** `meetings` table should auto-calculate quorum_required based on total membership/directors
 
 ---
 
 ## Appendix: Example Data
 
 ### Members Table (Sample)
-| Name | Email | Type | Join Date | Status | Shares | Conflicts |
-|------|-------|------|-----------|--------|--------|-----------|
-| Robert Berkeley | rob@example.com | Founding | 2024-10-15 | Active | 1 | 11 |
-| Olamide Adesanya | olamide@example.com | Founding | 2024-10-15 | Active | 1 | 3 |
-| Lloyd Young | lloyd@example.com | Founding | 2024-10-15 | Active | 1 | 0 |
+| Name | Email | Type | Category | Join Date | Status | Shares | Value | Is Director | Conflicts |
+|------|-------|------|----------|-----------|--------|--------|-------|-------------|-----------|
+| Robert Berkeley | rob@example.com | Founder Member | Natural Person | 2024-10-15 | Active | 1 | £10 | Yes | 11 |
+| Olamide Adesanya | olamide@example.com | Founder Member | Natural Person | 2024-10-15 | Active | 1 | £10 | Yes | 3 |
+| Lloyd Young | lloyd@example.com | Founder Member | Natural Person | 2024-10-15 | Active | 1 | £10 | Yes | 0 |
+
+**Note:** Each member holds minimum 1 non-withdrawable share at £10 nominal value (CBS Rule 22-23)
 
 ### Conflicts Table (Sample)
-| Member | Organization | Nature | Status | Declared |
-|--------|--------------|--------|--------|----------|
-| Robert Berkeley | THE BLACK BOY JOY CLUB CIC | Director | Current | 2024-11-10 |
-| Olamide Adesanya | NORTHANTS RAINBOW COLLECTIVE CIC | Director | Current | 2024-11-10 |
-| Cardew Jackson-Cole | NORTHANTS RAINBOW COLLECTIVE CIC | Director | Current | 2024-11-10 |
+| Member | Organization | Nature | Connected Person? | Status | Declared | Companies House # |
+|--------|--------------|--------|-------------------|--------|----------|-------------------|
+| Robert Berkeley | THE BLACK BOY JOY CLUB CIC | Director | No | Current | 2024-11-10 | 13547890 |
+| Olamide Adesanya | NORTHANTS RAINBOW COLLECTIVE CIC | Director | No | Current | 2024-11-10 | 14845673 |
+| Cardew Jackson-Cole | NORTHANTS RAINBOW COLLECTIVE CIC | Director | No | Current | 2024-11-10 | 14845673 |
+
+**Note:** Both Olamide and Cardew are co-directors of same CIC = potential conflict requiring recusal (CBS Rule 95)
 
 ### Applications Table (Sample)
-| Applicant | Applied | Proposer | Vote Date | Outcome | Member Created |
-|-----------|---------|----------|-----------|---------|----------------|
-| Founding Members (batch) | 2024-10-15 | N/A (founding) | 2024-10-15 | Approved | 9 members |
-| Jane Smith | 2025-02-01 | Robert Berkeley | 2025-02-15 | Approved | Jane Smith |
+| Applicant | Applied | Proposer | Seconder | Vote Date | Resolution Type | Outcome | Votes For/Against | Member Created |
+|-----------|---------|----------|----------|-----------|----------------|---------|-------------------|----------------|
+| Founding Members (batch) | 2024-10-15 | N/A (founding) | N/A | 2024-10-15 | Ordinary | Approved | 9/0 | 9 members |
+| Jane Smith | 2025-02-01 | Robert Berkeley | Lloyd Young | 2025-02-15 | Ordinary | Approved | 8/0 | Jane Smith |
 
 ### Decisions Table (Sample)
-| Decision | Vote Date | Meeting | Outcome | For | Against | Abstain |
-|----------|-----------|---------|---------|-----|---------|---------|
-| Approve CBS rules v1.0 | 2024-11-01 | Board | Passed | 9 | 0 | 0 |
-| Approve 2024 budget | 2024-11-15 | Board | Passed | 8 | 0 | 1 |
+| Decision | Vote Date | Meeting | Resolution Type | Threshold | Outcome | For | Against | Abstain | % For |
+|----------|-----------|---------|-----------------|-----------|---------|-----|---------|---------|-------|
+| Approve CBS rules v1.0 | 2024-11-01 | AGM | Ordinary | 50%+ | Passed | 9 | 0 | 0 | 100% |
+| Approve 2025 budget | 2024-11-15 | Board | Ordinary | 50%+ | Passed | 8 | 0 | 1 | 100% |
+| Amend Rule 23 (shareholding) | 2025-03-01 | Special General Meeting | Extraordinary | 75%+ | Passed | 8 | 1 | 0 | 89% |
+
+**Note:** Extraordinary Resolutions require 75%+ (CBS Rule 63), used for rule amendments, member expulsion, winding up
+
+### Meetings Table (Sample)
+| Date | Type | Purpose | Notice Sent | Quorum Required | Quorum Present | Quorum Met? |
+|------|------|---------|-------------|-----------------|----------------|-------------|
+| 2024-11-01 | AGM | First AGM, adopt rules | 2024-10-15 | 3 (greater of 3 or 10% of 9) | 9 | ✅ Yes |
+| 2024-11-15 | Board Meeting | Approve 2025 budget | 2024-11-10 | 3 (greater of 50% or 3) | 6 | ✅ Yes |
+| 2025-03-01 | Special General Meeting | Amend shareholding rule | 2025-02-15 | 3 | 9 | ✅ Yes |
+
+**Note:** General meeting quorum = 3 OR 10% of members (whichever greater), Board quorum = 50% of directors OR 3 (whichever greater) per CBS Rules 44, 92
 
 ---
 
 ## Version History
 
 - **v1.0** (2024-11-14): Initial PRD
+- **v1.1** (2024-11-15): Updated with actual CBS rules requirements:
+  - Added CBS Rules Summary section with specific voting thresholds, quorum requirements, conflict definitions
+  - Updated data models to reflect share structure (£10 per share, min 1 non-withdrawable)
+  - Added resolution types (Ordinary, Extraordinary 75%, Special)
+  - Updated conflict tracking to reflect Connected Person definition (family/household/business associates, NOT <1% shareholders)
+  - Added board composition tracking (director type, retirement cycle)
+  - Updated meeting requirements with specific quorum formulas
+  - Enhanced example data to show CBS-compliant scenarios
