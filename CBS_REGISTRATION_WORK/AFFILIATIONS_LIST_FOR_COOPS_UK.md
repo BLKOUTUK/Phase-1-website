@@ -1,9 +1,9 @@
 # BLKOUT Community Benefit Society
 ## Founding Members - Organizational Affiliations Disclosure
 
-**Date**: 14 November 2025
+**Date**: 15 November 2024
 **For**: Co-Operatives UK → FCA
-**Status**: All 9 founding members verified
+**Status**: All 9 founding members verified ✅
 
 ---
 
@@ -103,10 +103,11 @@ Both Olamide Adesanya and Cardew Jackson-Cole serve as co-directors (both appoin
 
 ## Verification
 
-- All 9 founding members confirmed their affiliations on 13-14 November 2025
-- Data sources: Companies House, Charity Commission, FCA Mutuals, member self-declaration
-- No additional conflicts of interest identified
-- All affiliations current as of 14 November 2025
+- ✅ All 9 founding members confirmed their affiliations on 13-15 November 2024
+- Data sources: Companies House, Charity Commission, FCA Mutuals, member self-declaration via blkout-verification portal
+- 100% response rate (9/9 members confirmed)
+- No additional conflicts of interest identified beyond the managed conflict noted above
+- All affiliations current as of 15 November 2024
 
 ---
 
