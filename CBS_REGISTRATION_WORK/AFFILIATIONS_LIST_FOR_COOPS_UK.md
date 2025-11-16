@@ -11,19 +11,21 @@
 
 | Total Members | Members with Affiliations | Current Active | Historical | Conflicts of Interest |
 |--------------|---------------------------|----------------|------------|----------------------|
-| 9 | 5 (56%) | 8 | 9 | 1 (managed) |
+| 9 | 4 (44%) | 10 | 10 | 1 (managed) |
 
 ---
 
-## 1. Robert Berkeley (DOB: March 1974)
+## 1. Robert Berkeley MBE (DOB: March 1974)
 
-**Current Active (4):**
+**Current Active (5):**
 1. THE BLACK BOY JOY CLUB CIC (11794996) - Director - Appointed: 07/03/2025
 2. DOC SOCIETY CHARITABLE TRUST (08446956) - Director - Appointed: 04/03/2021
 3. RIVERSIDE TRUST (01698349) - Director - Appointed: 03/12/2020 (In Administration)
 4. STANLEY ARTS (Charity 1159270) - Trustee - Appointed: 19/10/2024
+5. BLACK RESEARCHER CONSORTIUM CIC (16137821) - Chair - Appointed: 2025
 
-**Historical (7):**
+**Historical (8):**
+- BLKOUTUK LTD (12765166) - Director - 23/07/2020 to 19/10/2021 (Dissolved)
 - BARING FOUNDATION (00950696) - Director - 18/03/2013 to 17/06/2025
 - DOC SOCIETY (05278207) - Director - 12/05/2016 to 04/03/2021
 - EQUALLY OURS (06464749) - Director - Two terms: 20/07/2010-11/07/2012 & 10/07/2013-09/07/2014
@@ -71,8 +73,7 @@
 
 ## 7. Reuben Silungwe (DOB: August 1980)
 
-**Current Active (1):**
-- KALEIDOSCOPE TRUST - Charity Trustee - Active as of 2025
+**No organizational affiliations**
 
 ---
 
